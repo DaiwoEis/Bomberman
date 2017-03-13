@@ -2,6 +2,9 @@
 
 public class PlaceBombController : MonoBehaviour
 {
+    [SerializeField]
+    private Map _map = null;
+
     private BombBag _bombBag = null;
 
     private void Awake()
@@ -18,17 +21,13 @@ public class PlaceBombController : MonoBehaviour
 	{
 	    if (Input.GetButtonDown("Place"))
 	    {
-	        GameObject bomb;
-	        if (_bombBag.GetBomb(new Vector3(Mathf.RoundToInt(transform.position.x), 0f,
-	                Mathf.RoundToInt(transform.position.z)),
-	            Quaternion.identity, out bomb))
+	        Vector3 placePos = new Vector3(Mathf.RoundToInt(transform.position.x), 0f,
+	            Mathf.RoundToInt(transform.position.z));
+	        if (_map.CanPlace(placePos))
 	        {
-	            Debug.Log("Place bomb");
+                GameObject bomb;
+	            _bombBag.GetBomb(placePos, Quaternion.identity, out bomb);
 	        }
-	        else
-	        {
-                Debug.Log("not have bomb");
-            }
 	    }
 	}
 }

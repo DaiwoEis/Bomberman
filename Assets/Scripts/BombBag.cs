@@ -7,29 +7,40 @@ public class BombBag : MonoBehaviour
 
     private Role _role = null;
 
+    private int _bombNumberLevel = 0;
+
+    private int bombNumberLevel
+    {
+        get { return _bombNumberLevel; }
+        set
+        {
+            if (value > _bombNumberLevel)
+            {
+                _remainBombNum += _role.bombNumber - _maxBombNumber;
+                _maxBombNumber = _role.bombNumber;
+            }
+            _bombNumberLevel = value;
+        }
+    }
+
+    private int _maxBombNumber = 0;
+
     private int _remainBombNum = 0;
 
-    [SerializeField]
-    private TextAsset _bombNumberLevel = null;
-
-    private IntLevelMaper _bombNumberMaper = null;
 
     private void Awake()
     {
 	    _role = GetComponent<Role>();
-
-        _bombNumberMaper = new IntLevelMaper(_bombNumberLevel);
     }
 
     private void Start ()
     {
-
-        _remainBombNum = _bombNumberMaper.GetData(_role.bombNumberLevel);
+        _remainBombNum = _maxBombNumber = _role.bombNumber;
     }
 	
-	private void Update () 
+	private void Update ()
 	{
-	
+	    bombNumberLevel = _role.bombNumberLevel;
 	}
 
     public bool GetBomb(Vector3 position, Quaternion rotation, out GameObject go)
@@ -38,8 +49,10 @@ public class BombBag : MonoBehaviour
         {
             _remainBombNum--;
             go = Instantiate(_bombPrefab, position, rotation);
-            go.GetComponent<Bomb>().bag = this;
-            go.GetComponent<Bomb>().placer = gameObject;
+            Bomb bomb = go.GetComponent<Bomb>();
+            bomb.bag = this;
+            bomb.placer = gameObject;
+            bomb.power = _role.bombPower;
             return true;
         }
 

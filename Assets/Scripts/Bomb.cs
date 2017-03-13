@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Bomb : MonoBehaviour
 {
@@ -7,22 +6,21 @@ public class Bomb : MonoBehaviour
 
     public GameObject placer { get; set; }
 
+    public int power { get; set; }
+
     private bool _exploded = false;
 
     [SerializeField]
-    private GameObject _explosionPrefab = null;
-
-    [SerializeField]
-    private AudioClip _burnSound = null;
+    private AudioClip _chargedSound = null;
 
     [SerializeField]
     private AudioClip _explosionSound = null;
 
     [SerializeField]
-    private LayerMask _levelMask = default(LayerMask);
+    private GameObject _displayItem = null;
 
     [SerializeField]
-    private GameObject _model = null;
+    private GameObject _explosionManager = null;
 
     private AudioSource _audioSource = null;
 
@@ -34,7 +32,7 @@ public class Bomb : MonoBehaviour
     private void Start()
     {
         Invoke("Explode", 3f);
-        _audioSource.clip = _burnSound;
+        _audioSource.clip = _chargedSound;
         _audioSource.Play();
     }
 
@@ -45,57 +43,34 @@ public class Bomb : MonoBehaviour
         _audioSource.clip = _explosionSound;
         _audioSource.Play();
 
-        Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+        GameObject explosionManager = Instantiate(_explosionManager, transform.position, Quaternion.identity);
+        explosionManager.GetComponent<ExplosionManager>().power = power;
 
-        StartCoroutine(CreateExplosions(Vector3.forward));
-        StartCoroutine(CreateExplosions(Vector3.right));
-        StartCoroutine(CreateExplosions(Vector3.back));
-        StartCoroutine(CreateExplosions(Vector3.left));
-
-        _model.SetActive(false);
+        _displayItem.SetActive(false);
         GetComponent<Collider>().enabled = false;
-
 
         bag.ReturnBag();
 
-        Destroy(gameObject, 1f); 
+        SendMessage("OnExplosion");
+
+        Destroy(gameObject, _explosionSound.length + 0.2f);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == placer)
         {
-            GetComponent<Collider>().isTrigger = true;
+            GetComponent<Collider>().isTrigger = false;
+            GetComponent<Rigidbody>().isKinematic = true;
         }
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!_exploded && other.CompareTag("Explosion"))
+        if (!_exploded && other.CompareTag("ExplosionFlame"))
         {
             CancelInvoke("Explode");
             Explode();
-        }
-    }
-
-    private IEnumerator CreateExplosions(Vector3 direction)
-    {
-        for (int i = 1; i < 3; i++)
-        {
-            RaycastHit hit; 
-
-            Physics.Raycast(transform.position + new Vector3(0, .5f, 0), direction, out hit, i, _levelMask);              
-
-            if (!hit.collider)
-            {
-                Instantiate(_explosionPrefab, transform.position + i*direction, _explosionPrefab.transform.rotation);
-            }
-            else
-            {
-                break;
-            }
-
-            yield return new WaitForSeconds(.05f);
         }
     }
 }
