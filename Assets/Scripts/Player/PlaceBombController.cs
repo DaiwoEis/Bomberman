@@ -26,8 +26,8 @@ public class PlaceBombController : MonoBehaviour
 	        if (_map.CanPlace(placePos))
 	        {
                 GameObject bomb;
-	            _bombBag.GetBomb(placePos, Quaternion.identity, out bomb);
-	        }
+                _bombBag.GetBomb(placePos, Quaternion.identity, out bomb);
+            }
 	    }
 	}
 }

@@ -4,15 +4,15 @@ public class FillMapWithInTime : MonoBehaviour
 {
 	private void Awake() { }
 
-    private void Start()
+    private void OnEnable()
     {
-        GameObject.Find("MapData").GetComponent<Map>().FillMap(transform.position);
+        GameObject.Find("Map").GetComponent<Map>().FillMap(transform.position);
     }
 
     private void Update() { }
 
-    private void OnExplosion()
+    private void OnDisable()
     {
-        GameObject.Find("MapData").GetComponent<Map>().UnFillMap(transform.position);
+        GameObject.Find("Map").GetComponent<Map>().UnFillMap(transform.position);
     }
 }

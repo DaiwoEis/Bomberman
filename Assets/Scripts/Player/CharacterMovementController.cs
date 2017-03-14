@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class PlayerMovementController : MonoBehaviour
+public class CharacterMovementController : MonoBehaviour
 {
-    private Role _role = null;
+    private Character _character = null;
 
     [SerializeField]
     private Rigidbody _rigidbody = null;
@@ -12,7 +12,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Awake()
     {
-        _role = GetComponent<Role>();
+        _character = GetComponent<Character>();
         _rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -23,12 +23,12 @@ public class PlayerMovementController : MonoBehaviour
         Vector3 moveDirection;
         if (CheckMove(out moveDirection))
         {
-            _rigidbody.velocity = moveDirection*_role.moveSpeed;
+            _rigidbody.velocity = moveDirection*_character.moveSpeed;
             transform.forward = moveDirection;
         }
 
-        _animator.SetFloat("Speed", _rigidbody.velocity.magnitude/_role.moveSpeed);
-        _animator.speed = _role.animatorSpeed;
+        _animator.SetFloat("Speed", _rigidbody.velocity.magnitude/_character.moveSpeed);
+        _animator.speed = _character.animatorSpeed;
     }
 
     private void OnDisable()

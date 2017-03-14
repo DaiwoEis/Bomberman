@@ -51,8 +51,6 @@ public class Bomb : MonoBehaviour
 
         bag.ReturnBag();
 
-        SendMessage("OnExplosion");
-
         Destroy(gameObject, _explosionSound.length + 0.2f);
     }
 

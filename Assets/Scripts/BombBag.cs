@@ -5,7 +5,7 @@ public class BombBag : MonoBehaviour
     [SerializeField]
     private GameObject _bombPrefab = null;
 
-    private Role _role = null;
+    private Character _character = null;
 
     private int _bombNumberLevel = 0;
 
@@ -16,8 +16,8 @@ public class BombBag : MonoBehaviour
         {
             if (value > _bombNumberLevel)
             {
-                _remainBombNum += _role.bombNumber - _maxBombNumber;
-                _maxBombNumber = _role.bombNumber;
+                _remainBombNum += _character.bombNumber - _maxBombNumber;
+                _maxBombNumber = _character.bombNumber;
             }
             _bombNumberLevel = value;
         }
@@ -30,17 +30,17 @@ public class BombBag : MonoBehaviour
 
     private void Awake()
     {
-	    _role = GetComponent<Role>();
+	    _character = GetComponent<Character>();
     }
 
     private void Start ()
     {
-        _remainBombNum = _maxBombNumber = _role.bombNumber;
+        _remainBombNum = _maxBombNumber = _character.bombNumber;
     }
 	
 	private void Update ()
 	{
-	    bombNumberLevel = _role.bombNumberLevel;
+	    bombNumberLevel = _character.bombNumberLevel;
 	}
 
     public bool GetBomb(Vector3 position, Quaternion rotation, out GameObject go)
@@ -52,7 +52,7 @@ public class BombBag : MonoBehaviour
             Bomb bomb = go.GetComponent<Bomb>();
             bomb.bag = this;
             bomb.placer = gameObject;
-            bomb.power = _role.bombPower;
+            bomb.power = _character.bombPower;
             return true;
         }
 

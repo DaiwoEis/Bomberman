@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [DefaultExecutionOrder(-1)]
-public class Role : MonoBehaviour
+public class Character : Pawn
 {
     [SerializeField]
     private int _speedLevel = 1;
@@ -36,10 +36,6 @@ public class Role : MonoBehaviour
     public int bombNumber { get { return _bombNumberMaper[_bombNumberLevel]; } }
     public int bombPower { get { return _bombPowerMaper[_bombPowerLevel]; } }
 
-    public event Action OnSpawn = null;
-
-    public event Action OnDeath = null;
-
     [SerializeField]
     private Animator _animator = null;
 
@@ -55,16 +51,21 @@ public class Role : MonoBehaviour
 
     private void Enable()
     {
-        if (OnSpawn != null)
-            OnSpawn();
+        TriggerOnSpawnEvent();
     }
 
-    public void TriggerOnDeath()
+    public override void Death()
     {
-        if (OnDeath != null)
-            OnDeath();
-        _animator.speed = 1f;
-        _animator.SetBool("IsDead", true);
+        base.Death();
+
+        TriggerOnDeathEvent();
+
+        if (_animator != null)
+        {
+            _animator.speed = 1f;
+            _animator.SetBool("IsDead", true);
+        }
+
         Destroy(gameObject, 2f);
     }
 }

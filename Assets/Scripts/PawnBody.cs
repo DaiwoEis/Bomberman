@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-public class Body : MonoBehaviour , IHitable
+public class PawnBody : MonoBehaviour , IHitable
 {
     [SerializeField]
     private string[] _canHittedTags = null;
@@ -15,6 +15,6 @@ public class Body : MonoBehaviour , IHitable
 
     public void Hit()
     {
-        GetComponent<Role>().TriggerOnDeath();        
+        GetComponent<Pawn>().Death();  
     }
 }

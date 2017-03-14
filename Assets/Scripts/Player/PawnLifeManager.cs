@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 
-public class LifeManager : MonoBehaviour
+public class PawnLifeManager : MonoBehaviour
 {
     [SerializeField]
     private MonoBehaviour[] _components = null;
 
     private void Awake()
     {
-        Role role = GetComponent<Role>();
-        role.OnSpawn += EnableComponents;
-        role.OnDeath += DisableComponents;
+        Character character = GetComponent<Character>();
+        character.OnSpawn += EnableComponents;
+        character.OnDeath += DisableComponents;
     }
 
     private void Start() { }
