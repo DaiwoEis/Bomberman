@@ -19,8 +19,12 @@ public class Map : MonoBehaviour
     [SerializeField]
     private int _width = 0;
 
+    public int width { get { return _width; } }
+
     [SerializeField]
     private int _height = 0;
+
+    public int height { get { return _height; } }
 
     private Tile[,] _tiles = null;
 

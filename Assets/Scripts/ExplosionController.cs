@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ExplosionManager : MonoBehaviour
+public class ExplosionController : MonoBehaviour
 {
     [SerializeField]
     private GameObject _explosionPrefab = null;

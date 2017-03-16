@@ -44,7 +44,7 @@ public class Bomb : MonoBehaviour
         _audioSource.Play();
 
         GameObject explosionManager = Instantiate(_explosionManager, transform.position, Quaternion.identity);
-        explosionManager.GetComponent<ExplosionManager>().power = power;
+        explosionManager.GetComponent<ExplosionController>().power = power;
 
         _displayItem.SetActive(false);
         GetComponent<Collider>().enabled = false;
