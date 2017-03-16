@@ -5,8 +5,8 @@ public class RandomMove : MonoBehaviour
 {
     private Rigidbody _rigidbody = null;
 
-    [SerializeField]
-    private Map _map = null;
+    //[SerializeField]
+    //private Map _map = null;
 
     [SerializeField]
     private LayerMask _cantMoveLayer = default(LayerMask);
@@ -34,26 +34,12 @@ public class RandomMove : MonoBehaviour
     {
         _moveDirection = Vector3.right;
 
-        for (int x = (int)transform.position.x; x < _map.floor.GetLength(1); ++x)
-        {
-            if (_map.floor[(int)transform.position.z, x])
-            {
-                _destPos = new Vector3(x, transform.position.y, transform.position.z);
-            }
-        }
     }
 
     private void MoveLeft()
     {
         _moveDirection = Vector3.left;
 
-        for (int x = (int) transform.position.x; x >= 0; --x)
-        {
-            if (_map.floor[(int) transform.position.z, x])
-            {
-                _destPos = new Vector3(x, transform.position.y, transform.position.z);
-            }
-        }
     }
 
     private bool MoveComplete()

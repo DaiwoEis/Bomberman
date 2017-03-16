@@ -14,20 +14,18 @@ public class PlaceBombController : MonoBehaviour
 
 	private void Start () 
 	{
-	    
+
 	}
 	
 	private void Update () 
 	{
-	    if (Input.GetButtonDown("Place"))
-	    {
-	        Vector3 placePos = new Vector3(Mathf.RoundToInt(transform.position.x), 0f,
-	            Mathf.RoundToInt(transform.position.z));
-	        if (_map.CanPlace(placePos))
-	        {
+        if (Input.GetButtonDown("Place"))
+        {
+            if (_map.IsEmptyTile(transform.position))
+            {
                 GameObject bomb;
-                _bombBag.GetBomb(placePos, Quaternion.identity, out bomb);
+                _bombBag.GetBomb(_map.GetCenterPosition(transform.position), Quaternion.identity, out bomb);
             }
-	    }
-	}
+        }
+    }
 }

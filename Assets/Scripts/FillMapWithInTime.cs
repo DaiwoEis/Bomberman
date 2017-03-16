@@ -1,18 +1,24 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(TileItem))]
 public class FillMapWithInTime : MonoBehaviour
 {
-	private void Awake() { }
+    private TileItem _tileItem = null;
+
+    private void Awake()
+    {
+        _tileItem = GetComponent<TileItem>();
+    }
 
     private void OnEnable()
     {
-        GameObject.Find("Map").GetComponent<Map>().FillMap(transform.position);
+        GameObject.Find("Map").GetComponent<Map>().GetTile(transform.position).tileItems.Add(_tileItem);
     }
 
     private void Update() { }
 
     private void OnDisable()
     {
-        GameObject.Find("Map").GetComponent<Map>().UnFillMap(transform.position);
+        GameObject.Find("Map").GetComponent<Map>().GetTile(transform.position).tileItems.Remove(_tileItem);
     }
 }
