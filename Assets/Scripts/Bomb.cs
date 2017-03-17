@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Bomb : MonoBehaviour
+public class Bomb : Actor
 {
     public BombBag bag { get; set; }
 
@@ -17,7 +17,7 @@ public class Bomb : MonoBehaviour
     private AudioClip _explosionSound = null;
 
     [SerializeField]
-    private GameObject _displayItem = null;
+    private GameObject _showItem = null;
 
     [SerializeField]
     private GameObject _explosionManager = null;
@@ -36,6 +36,11 @@ public class Bomb : MonoBehaviour
         _audioSource.Play();
     }
 
+    private void OnEnable()
+    {
+        TriggerOnShowEvent();
+    }
+
     private void Explode()
     {
         _exploded = true;
@@ -46,8 +51,9 @@ public class Bomb : MonoBehaviour
         GameObject explosionManager = Instantiate(_explosionManager, transform.position, Quaternion.identity);
         explosionManager.GetComponent<ExplosionController>().power = power;
 
-        _displayItem.SetActive(false);
+        _showItem.SetActive(false);
         GetComponent<Collider>().enabled = false;
+        TriggerOnHideEvent();
 
         bag.ReturnBag();
 

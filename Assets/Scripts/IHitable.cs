@@ -4,5 +4,5 @@ public interface IHitable
 {
     bool CanHit(GameObject hitter);
 
-    void Hit();
+    void Hit(GameObject hitter);
 }

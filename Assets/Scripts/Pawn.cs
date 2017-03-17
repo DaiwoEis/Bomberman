@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class Pawn : MonoBehaviour
+public class Pawn : MonoBehaviour
 {
     public event Action OnSpawn;
 

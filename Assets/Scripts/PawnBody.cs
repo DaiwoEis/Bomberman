@@ -13,7 +13,7 @@ public class PawnBody : MonoBehaviour , IHitable
         return _canHittedTags.Any(hitter.CompareTag);
     }
 
-    public void Hit()
+    public void Hit(GameObject hitter)
     {
         GetComponent<Pawn>().Death();  
     }

@@ -13,7 +13,7 @@ public class ExplosionFlame : MonoBehaviour
         IHitable hitTarget = other.GetComponent<IHitable>();
         if (hitTarget != null && hitTarget.CanHit(gameObject))
         {
-            hitTarget.Hit();
+            hitTarget.Hit(gameObject);
         }
     }
 }

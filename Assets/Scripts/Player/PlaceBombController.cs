@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class PlaceBombController : MonoBehaviour
 {
-    [SerializeField]
+    [Inject]
     private Map _map = null;
 
     private BombBag _bombBag = null;

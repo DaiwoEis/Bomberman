@@ -48,13 +48,4 @@ public class CharacterMovementController : MonoBehaviour
         direction = Vector3.zero;
         return false;
     }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        IHitable hitTarget = other.collider.GetComponent<IHitable>();
-        if (hitTarget != null && hitTarget.CanHit(gameObject))
-        {
-            hitTarget.Hit();
-        }
-    }
 }

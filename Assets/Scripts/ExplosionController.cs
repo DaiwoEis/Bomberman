@@ -32,13 +32,15 @@ public class ExplosionController : MonoBehaviour
         {
             RaycastHit hitInfo;
 
+            Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0),direction*i,Color.red,2f);
+
+            Instantiate(_explosionPrefab, transform.position + i * direction, _explosionPrefab.transform.rotation);
+
             if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), direction, out hitInfo, i, _blockLayer))
             {
                 break;
             }
 
-            Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0),direction*i,Color.red,2f);
-            Instantiate(_explosionPrefab, transform.position + i * direction, _explosionPrefab.transform.rotation);
             yield return new WaitForSeconds(.05f);
         }
     }

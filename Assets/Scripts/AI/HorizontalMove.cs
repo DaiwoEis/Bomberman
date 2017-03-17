@@ -32,6 +32,16 @@ public class HorizontalMove : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        _nextState = MoveState.AtLeft;
+    }
+
+    private void OnDisable()
+    {
+        _rigidbody.velocity = Vector3.zero;
+    }
+
     private void Update()
     {
         switch (_currState)
