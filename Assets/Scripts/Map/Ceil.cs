@@ -4,18 +4,18 @@ using UnityEngine;
 public class Ceil : MonoBehaviour
 {
     [SerializeField]
-    private List<CeilItem> _tileItems = new List<CeilItem>();
+    private List<CeilItem> _items = new List<CeilItem>();
 
-    public List<CeilItem> tileItems { get { return _tileItems; } }
+    public List<CeilItem> items { get { return _items; } }
 
-    public Vector3 centerPosition { get; set; }
+    public CeilCoordinate coordinate { get; set; }
 
-    public TileIndex tileIndex { get { return new TileIndex((int) centerPosition.z, (int) centerPosition.x); } }
+    public Vector3 centerPosition { get { return new Vector3(coordinate.col, 0f, coordinate.row); } }
 }
 
-public struct TileIndex
+public struct CeilCoordinate
 {
-    public TileIndex(int row, int col)
+    public CeilCoordinate(int row, int col)
     {
         this.row = row;
         this.col = col;

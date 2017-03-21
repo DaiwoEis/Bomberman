@@ -1,18 +1,15 @@
-﻿using UnityEngine;
-
-public class Wall : Actor 
+﻿public class Wall : Actor 
 {
 	private void Awake() { }
 
-    private void Start() { }
-
-    private void OnEnable()
+    private void Start()
     {
-        TriggerOnShowEvent();
+        TriggerOnSpawnEvent();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        TriggerOnHideEvent();
+        TriggerOnDeathEvent();
+        TriggerOnDestroyEvent();
     }
 }

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map : MonoBehaviour
+public class Map : Singleton<Map>
 {
-    private static string FLOOR_NAME = "Floor";
+    private static readonly string FLOOR_NAME = "Floor";
 
-    private static string CEILS_NAME = "Ceils";
+    private static readonly string CEILS_NAME = "Ceils";
 
-    private static string CEIL_ITEMS_FILE_NAME = "CeilItems";
+    private static readonly string CEIL_ITEMS_FILE_NAME = "CeilItems";
 
     [SerializeField]
     private TextAsset _mapAsset = null;
@@ -28,8 +28,6 @@ public class Map : MonoBehaviour
 
     private Ceil[,] _ceils = null;
 
-    public Ceil[,] Ceils { get { return _ceils; } }
-
     private Dictionary<string, GameObject> _tileItemPrefabDic = null;
 
     private void Awake()
@@ -41,7 +39,8 @@ public class Map : MonoBehaviour
             for (int x = 0; x < _width; ++x)
             {
                 int index = z*_width + x;
-                _ceils[z, x] = _tilesTrans.GetChild(index).GetComponent<Ceil>();                
+                _ceils[z, x] = _tilesTrans.GetChild(index).GetComponent<Ceil>();
+                _ceils[z, x].coordinate = new CeilCoordinate(z, x);
             }
         }
     }
@@ -56,15 +55,20 @@ public class Map : MonoBehaviour
         return pos;
     }
 
-    public Ceil GetTile(Vector3 pos)
+    public Ceil GetCeil(Vector3 pos)
     {
         Vector3 centerPos = GetCenterPosition(pos);
         return _ceils[(int) centerPos.z, (int) centerPos.x];
     }
 
+    public Ceil GetCeil(int row, int col)
+    {       
+        return _ceils[row, col];
+    }
+
     public bool IsEmptyTile(Vector3 pos)
     {
-        return GetTile(pos).tileItems.Count == 0;
+        return GetCeil(pos).items.Count == 0;
     }
 
     public void GenerateMap()
@@ -101,22 +105,26 @@ public class Map : MonoBehaviour
             string[] rowDatas = lineDatas[lineDatas.Length - 1 - z].Split(new[] { "," }, options);
             for (int x = 0; x < _width; ++x)
             {
-                GameObject newTileGO = new GameObject("Ceil");
-                newTileGO.transform.parent = tilesGO.transform;
-                newTileGO.transform.SetAsLastSibling();
+                GameObject newCeilGO = new GameObject("Ceil");
+                newCeilGO.transform.parent = tilesGO.transform;
+                newCeilGO.transform.SetAsLastSibling();
                 Vector3 centerPos = new Vector3(x, 0f, z);
-                newTileGO.transform.position = centerPos;
-                Ceil newCeil = newTileGO.AddComponent<Ceil>();
-                newCeil.centerPosition = centerPos;
+                newCeilGO.transform.position = centerPos;
 
-                if (_tileItemPrefabDic.ContainsKey(rowDatas[x]))
+                Ceil newCeil = newCeilGO.AddComponent<Ceil>();
+                newCeil.coordinate = new CeilCoordinate(z, x);
+
+                string[] ceilItemNames = rowDatas[x].Split(new[] {"|"}, options);
+                foreach (string ceilItemName in ceilItemNames)
                 {
-                    CeilItem ceilItem =
-                        Instantiate(_tileItemPrefabDic[rowDatas[x]], centerPos, Quaternion.identity)
-                            .GetComponent<CeilItem>();
-                    ceilItem.transform.parent = newTileGO.transform;
-                    //newCeil.tileItems.Add(ceilItem);                             
-                }
+                    if (_tileItemPrefabDic.ContainsKey(ceilItemName))
+                    {
+                        CeilItem ceilItem =
+                            Instantiate(_tileItemPrefabDic[ceilItemName], centerPos, Quaternion.identity)
+                                .GetComponent<CeilItem>();
+                        ceilItem.transform.parent = newCeilGO.transform;
+                    }
+                }                
             }        
         }
     }

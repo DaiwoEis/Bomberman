@@ -15,5 +15,6 @@ public enum TileItemType
     Creature,
     Props,
     Wall,
-    Bomb
+    Bomb,
+    Door
 }

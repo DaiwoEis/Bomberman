@@ -2,9 +2,9 @@
 Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall
 Wall,n,n,n,n,n,n,n,n,Wall
 Wall,n,Wall,n,Wall,Wall,n,Wall,n,Wall
-Wall,n,n,n,DestructibleWall-Number,n,n,DestructibleWall-Number,n,Wall
+Wall,n,n,n,DestructibleWall|Door,n,n,DestructibleWall,n,Wall
 Wall,n,Wall,n,Wall,Wall,n,Wall,n,Wall
-Wall,n,n,n,n,n,n,n,n,Wall
+Wall,n,n,n,n,n,DestructibleWall,n,n,Wall
 Wall,n,Wall,n,Wall,Wall,n,Wall,n,Wall
-Wall,DestructibleWall-Number,n,DestructibleWall,DestructibleWall,DestructibleWall,DestructibleWall,DestructibleWall,DestructibleWall,Wall
+Wall,DestructibleWall|Number,n,DestructibleWall|Speed,DestructibleWall,DestructibleWall|Speed,DestructibleWall,DestructibleWall,DestructibleWall,Wall
 Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall

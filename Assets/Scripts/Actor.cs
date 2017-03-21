@@ -3,17 +3,24 @@ using UnityEngine;
 
 public class Actor : MonoBehaviour 
 {
-    public event Action OnShow;
+    public event Action onSpawn;
 
-    public event Action OnHide;
+    public event Action onDeath;
 
-    public void TriggerOnShowEvent()
+    public event Action onDestroy;
+
+    public void TriggerOnSpawnEvent()
     {
-        if (OnShow != null) OnShow();
+        if (onSpawn != null) onSpawn();
     }
 
-    public void TriggerOnHideEvent()
+    public void TriggerOnDeathEvent()
     {
-        if (OnHide != null) OnHide();
+        if (onDeath != null) onDeath();
+    }
+
+    public void TriggerOnDestroyEvent()
+    {
+        if (onDestroy != null) onDestroy();
     }
 }

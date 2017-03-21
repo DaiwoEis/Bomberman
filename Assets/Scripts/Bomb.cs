@@ -11,6 +11,9 @@ public class Bomb : Actor
     private bool _exploded = false;
 
     [SerializeField]
+    private float _chargedTime = 3f;
+
+    [SerializeField]
     private AudioClip _chargedSound = null;
 
     [SerializeField]
@@ -31,14 +34,12 @@ public class Bomb : Actor
 
     private void Start()
     {
-        Invoke("Explode", 3f);
+        TriggerOnSpawnEvent();
+
+        Invoke("Explode", _chargedTime);
+
         _audioSource.clip = _chargedSound;
         _audioSource.Play();
-    }
-
-    private void OnEnable()
-    {
-        TriggerOnShowEvent();
     }
 
     private void Explode()
@@ -53,7 +54,7 @@ public class Bomb : Actor
 
         _showItem.SetActive(false);
         GetComponent<Collider>().enabled = false;
-        TriggerOnHideEvent();
+        TriggerOnDeathEvent();
 
         bag.ReturnBag();
 
@@ -71,10 +72,15 @@ public class Bomb : Actor
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!_exploded && other.CompareTag("ExplosionFlame"))
+        if (!_exploded && other.CompareTag(TagConfig.EXPLOSION_FLAME))
         {
             CancelInvoke("Explode");
             Explode();
         }
+    }
+
+    private void OnDestroy()
+    {
+        TriggerOnDestroyEvent();
     }
 }

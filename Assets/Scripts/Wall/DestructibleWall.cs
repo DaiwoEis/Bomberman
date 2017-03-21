@@ -3,10 +3,10 @@
 public class DestructibleWall : Actor, IHitable
 {
     [SerializeField]
-    private bool _contaionProps = false;
+    private bool _containProps = false;
 
     [SerializeField]
-    private GameObject _propsPrefab = null;
+    private GameObject _spawnObjectAfterDamaged = null;
 
     [SerializeField]
     private GameObject _showModel = null;
@@ -18,32 +18,34 @@ public class DestructibleWall : Actor, IHitable
 
     private void Start()
     {
-    }
-
-    private void OnEnable()
-    {
         _hitted = false;
         _showModel.SetActive(true);
-        TriggerOnShowEvent();
+        TriggerOnSpawnEvent();
     }
 
     public bool CanHit(GameObject hitter)
     {
-        return hitter.CompareTag("ExplosionFlame") && _hitted == false;
+        return hitter.CompareTag(TagConfig.EXPLOSION_FLAME) && _hitted == false;
     }
 
     public void Hit(GameObject hitter)
     {
         _hitted = true;
         _showModel.SetActive(false);
-        TriggerOnHideEvent();
+                
         Destroy(gameObject, _destroyTimeAfterDamaged);
-        if (_contaionProps)
+        if (_containProps)
             Invoke("SpawnProps", _destroyTimeAfterDamaged - 0.1f);
     }
 
     private void SpawnProps()
     {
-        Instantiate(_propsPrefab, transform.position, Quaternion.identity);
+        Instantiate(_spawnObjectAfterDamaged, transform.position, Quaternion.identity);
+    }
+
+    private void OnDestroy()
+    {
+        TriggerOnDeathEvent();
+        TriggerOnDestroyEvent();
     }
 }
