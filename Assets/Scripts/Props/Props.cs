@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Props : Actor, IHitable
 {
@@ -11,7 +10,7 @@ public abstract class Props : Actor, IHitable
 
     protected AudioSource _audioSource = null;
 
-    private bool _canUse = false;
+    private bool _isHide = true;
 
     protected virtual void Awake()
     {
@@ -26,12 +25,12 @@ public abstract class Props : Actor, IHitable
 
     protected virtual void Update()
     {
-        _canUse = Singleton<Map>.instance.GetCeil(transform.position).items.Count <= 1;
+        _isHide = Singleton<Map>.instance.GetCeil(transform.position).items.Count > 1;
     }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (_canUse == false) return;
+        if (_isHide) return;
 
         if (other.CompareTag(TagConfig.PLAYER))
         {
@@ -52,7 +51,7 @@ public abstract class Props : Actor, IHitable
 
     public bool CanHit(GameObject hitter)
     {
-        return hitter.CompareTag(TagConfig.EXPLOSION_FLAME) && _canUse;
+        return hitter.CompareTag(TagConfig.EXPLOSION_FLAME) && !_isHide;
     }
 
     public virtual void Hit(GameObject hitter)

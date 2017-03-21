@@ -21,14 +21,14 @@ public class Door : Actor
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (_locked) return;
 
-        if (other.CompareTag(TagConfig.PLAYER))
+        if (other.CompareTag(TagConfig.PLAYER) &&
+            Utility.SqrtDistance(other.transform.position, transform.position) < Utility.ArriveSqrtMagnitude)
         {
             Singleton<GameState>.instance.GameOver(GameState.GameOverType.Succeed);
-            Debug.Log("Game succeed");
         }
     }
 }
