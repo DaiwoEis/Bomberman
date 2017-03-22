@@ -28,7 +28,7 @@ public class Door : Actor
         if (other.CompareTag(TagConfig.PLAYER) &&
             Utility.SqrtDistance(other.transform.position, transform.position) < Utility.ArriveSqrtMagnitude)
         {
-            Singleton<GameState>.instance.GameOver(GameState.GameOverType.Succeed);
+            GameState.instance.GameOver(GameState.GameOverType.Succeed);
         }
     }
 }

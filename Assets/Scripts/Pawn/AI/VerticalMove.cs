@@ -57,7 +57,7 @@ public class VerticalMove : Function
 
         if (_nextState != MoveState.Null)
         {
-            Map map = Singleton<Map>.instance;
+            Map map = Map.instance;
             switch (_nextState)
             {
                 case MoveState.AtDown:

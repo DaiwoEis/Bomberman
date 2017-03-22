@@ -2,7 +2,10 @@
 
 public class CeilItem : MonoBehaviour
 {
-    public new string name { get { return gameObject.name; } }
+    [SerializeField]
+    private string _shorterName = "";
+
+    public string shorterName { get { return _shorterName; } }
 
     [SerializeField]
     private TileItemType _type = default(TileItemType);

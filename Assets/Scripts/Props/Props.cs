@@ -25,7 +25,7 @@ public abstract class Props : Actor, IHitable
 
     protected virtual void Update()
     {
-        _isHide = Singleton<Map>.instance.GetCeil(transform.position).items.Count > 1;
+        _isHide = Map.instance.GetCeil(transform.position).items.Count > 1;
     }
 
     protected virtual void OnTriggerEnter(Collider other)

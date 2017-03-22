@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CUI;
+using UnityEngine;
 
 public class DefeatAllEnemies : GameMode
 {
@@ -9,14 +10,29 @@ public class DefeatAllEnemies : GameMode
 
     private void Start()
     {
+        GameState.instance.GameInit();
+
+        Singleton<ViewManager>.Create();
+
         GameObject.FindWithTag(TagConfig.PLAYER).GetComponent<Actor>().onDeath += () =>
         {
-            Singleton<GameState>.instance.GameOver(GameState.GameOverType.Failure);
+            GameState.instance.GameOver(GameState.GameOverType.Failure);
         };
+
+        CoroutineUtility.UStartCoroutine(2f, () =>
+        {
+            GameState.instance.GameStart();
+            Singleton<ViewManager>.instance.AddCommond(new OpenCommond(UIType.GameRun));
+        });
     }
 
     public override bool ObjectIsComplete()
     {
-        return _aliveEnemyCount == 0 && Singleton<GameState>.instance.state == GameState.GameStage.Running;
+        return _aliveEnemyCount == 0 && GameState.instance.state == GameState.GameStage.Running;
+    }
+
+    private void OnDestroy()
+    {
+        Singleton<ViewManager>.Destroy();
     }
 }

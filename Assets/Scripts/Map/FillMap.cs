@@ -9,7 +9,7 @@ public class FillMap : MonoBehaviour
     {
         _ceilItem = GetComponent<CeilItem>();
 
-        Map map = Singleton<Map>.instance;
+        Map map = Map.instance;
 
         Actor actor = GetComponent<Actor>();
         actor.onSpawn += () => map.GetCeil(transform.position).items.Add(_ceilItem);

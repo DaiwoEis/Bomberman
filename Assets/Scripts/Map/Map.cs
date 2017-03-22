@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map : Singleton<Map>
+public class Map : MonoSingleton<Map>
 {
     private static readonly string FLOOR_NAME = "Floor";
 
@@ -83,9 +83,7 @@ public class Map : Singleton<Map>
     {
         _tileItemPrefabDic = new Dictionary<string, GameObject>();
         foreach (CeilItem tileItem in Resources.LoadAll<CeilItem>(CEIL_ITEMS_FILE_NAME))
-        {
-            _tileItemPrefabDic[tileItem.name] = tileItem.gameObject;
-        }
+            _tileItemPrefabDic[tileItem.shorterName] = tileItem.gameObject;
     }
 
     private void GenrateTiles()

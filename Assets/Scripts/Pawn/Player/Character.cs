@@ -62,8 +62,6 @@ public class Character : Pawn
             _animator.speed = 1f;
             _animator.SetBool(AnimatorConfig.BOOL_IS_DEAD, true);
         }
-
-        Destroy(gameObject, 2f);
     }
 
     private void OnDestroy()

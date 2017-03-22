@@ -1,27 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
 
-public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public static class Singleton<T> where T : class
 {
     private static T _instance;
+
+    public static void Create()
+    {
+        _instance = (T)Activator.CreateInstance(typeof(T), true);
+    }
 
     public static T instance
     {
         get
         {
-            if (_instance == null)
-                _instance = FindObjectOfType<T>();
-
-            if (_instance == null)
-            {
-                Debug.LogError(string.Format("Please make at least exit a {0} GameObject in the scene", typeof(T)));
-            }
-
             return _instance;
-
         }
     }
 
-    protected virtual void OnDestroy()
+    public static void Destroy()
     {
         _instance = null;
     }

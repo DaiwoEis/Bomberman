@@ -14,7 +14,7 @@ public class FunctionController : MonoBehaviour
 
     private void OnSpawn()
     {
-        GameState gameState = Singleton<GameState>.instance;
+        GameState gameState = GameState.instance;
 
         if (gameState.state == GameState.GameStage.Running)
             FunctionsOn();
@@ -29,7 +29,7 @@ public class FunctionController : MonoBehaviour
     {
         FunctionsOff();
 
-        GameState gameState = Singleton<GameState>.instance;
+        GameState gameState = GameState.instance;
 
         if (gameState != null)
         {

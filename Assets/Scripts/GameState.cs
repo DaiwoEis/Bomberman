@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
-public class GameState : Singleton<GameState>
+public class GameState : MonoSingleton<GameState>
 {
-    [SerializeField]
-    private float _initTime = 2f;
-
     [SerializeField]
     private GameStage _state = GameStage.Init;
 
@@ -17,15 +13,7 @@ public class GameState : Singleton<GameState>
     public event Action OnGameResumed;
     public event GameOverDelegate OnGameOver;
 
-    private IEnumerator Start()
-    {
-        GameInit();
-
-        yield return new WaitForSecondsRealtime(_initTime);
-        GameStart();
-    }
-
-    private void GameInit()
+    public void GameInit()
     {
         _state = GameStage.Init;
         Time.timeScale = 1f;

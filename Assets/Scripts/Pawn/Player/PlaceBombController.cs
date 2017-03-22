@@ -15,7 +15,7 @@ public class PlaceBombController : Function
 	{
         if (Input.GetButtonDown("Place"))
         {
-            Map map = Singleton<Map>.instance;
+            Map map = Map.instance;
             if (map.IsEmptyTile(transform.position))
             {
                 GameObject bomb;
