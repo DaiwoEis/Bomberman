@@ -20,6 +20,11 @@ public class Utility
         return pos1.sqrMagnitude;
     }
 
+    public static bool IsArrive(Vector3 origin, Vector3 dest)
+    {
+        return SqrtDistance(origin, dest) < ArriveSqrtMagnitude;
+    }
+
     public static readonly float ArriveSqrtMagnitude = 0.01f;
 
     public static readonly float ArriveMagnitude = 0.1f;

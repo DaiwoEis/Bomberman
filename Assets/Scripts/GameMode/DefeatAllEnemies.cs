@@ -1,5 +1,6 @@
 ﻿using CUI;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class DefeatAllEnemies : GameMode
 {
@@ -8,31 +9,57 @@ public class DefeatAllEnemies : GameMode
 
     public int aliveEnemyCount { get { return _aliveEnemyCount; } set { _aliveEnemyCount = value; } }
 
+    private bool _playerIsDead = false;
+
+    [SerializeField]
+    private bool _gameStart = false;
+
+    public bool playerEnterTheDoor { get; set; }
+
+    private Door _door = null;
+
+    [SerializeField]
+    private BaseView _pausedView = null;
+
+    private bool _resumed = false;
+
     private void Start()
     {
-        GameState.instance.GameInit();
+        Singleton<ViewController>.Create();
 
-        Singleton<ViewManager>.Create();
+        InitGameState();
+    }
 
-        GameObject.FindWithTag(TagConfig.PLAYER).GetComponent<Actor>().onDeath += () =>
-        {
-            GameState.instance.GameOver(GameState.GameOverType.Failure);
-        };
+    private void InitGameState()
+    {
+        CoroutineUtility.UStartCoroutine(2f, () => _gameStart = true);
+        GameObject.FindWithTag(TagConfig.PLAYER).GetComponent<Actor>().onDeath += () => _playerIsDead = true;
+        _door = GameObject.FindWithTag(TagConfig.DOOR).GetComponent<Door>();
+        _pausedView.onExit += () => { _resumed = true; };
 
-        CoroutineUtility.UStartCoroutine(2f, () =>
-        {
-            GameState.instance.GameStart();
-            Singleton<ViewManager>.instance.AddCommond(new OpenCommond(UIType.GameRun));
-        });
+        GameStateController.instance.When(GameStateType.Init).ChangeTo(() => _gameStart, GameStateType.Running);
+
+        GameStateController.instance.When(GameStateType.Running)
+            .ChangeTo(() => Input.GetKeyDown(KeyCode.Escape), GameStateType.Paused);
+        GameStateController.instance.When(GameStateType.Running).ChangeTo(() => _playerIsDead, GameStateType.Failure);
+        GameStateController.instance.When(GameStateType.Running).ChangeTo(() => _door.playerEnterTheDoor, GameStateType.Succeed);
+
+        GameStateController.instance.When(GameStateType.Paused)
+            .ChangeTo(() =>
+            {
+                bool result = _resumed;
+                _resumed = false;
+                return result;
+            }, GameStateType.Running);
     }
 
     public override bool ObjectIsComplete()
     {
-        return _aliveEnemyCount == 0 && GameState.instance.state == GameState.GameStage.Running;
+        return _aliveEnemyCount == 0 && GameStateController.instance.currStateType == GameStateType.Running;
     }
 
     private void OnDestroy()
     {
-        Singleton<ViewManager>.Destroy();
+        Singleton<ViewController>.Destroy();
     }
 }
