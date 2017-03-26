@@ -2,14 +2,11 @@
 
 public class AliveEnemyCounting : MonoBehaviour
 {
-    private static DefeatAllEnemies _gameMode = null;
+    private DefeatAllEnemies _gameMode = null;
 
     private void Awake()
     {
-        if (_gameMode == null)
-        {
-            _gameMode = GameObject.FindWithTag(TagConfig.GAME_MODE).GetComponent<DefeatAllEnemies>();
-        }
+        _gameMode = GameObject.FindWithTag(TagConfig.GAME_MODE).GetComponent<DefeatAllEnemies>();
 
         Actor actor = GetComponent<Actor>();
         actor.onSpawn += () => _gameMode.aliveEnemyCount += 1;
