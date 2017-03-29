@@ -44,11 +44,19 @@ public class Character : Pawn
         _animatorSpeedMaper.Init();
         _bombNumberMaper.Init();
         _bombPowerMaper.Init();
+
+        onSpawn += Spawn;
     }
 
     private void Start()
     {
         TriggerOnSpawnEvent();
+    }
+
+    private void Spawn()
+    {
+        _animator.speed = 1f;
+        _animator.SetBool(AnimatorConfig.BOOL_IS_DEAD, false);
     }
 
     public override void Death()
@@ -59,7 +67,6 @@ public class Character : Pawn
 
         if (_animator != null)
         {
-            _animator.speed = 1f;
             _animator.SetBool(AnimatorConfig.BOOL_IS_DEAD, true);
         }
     }

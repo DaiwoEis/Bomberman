@@ -8,14 +8,14 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
-        Singleton<ViewController>.Create();
+        ViewController.Create();
 
         Singleton<ViewController>.instance.AddCommond(new OpenCommond(_mainMenuView));
     }
 
     private void OnDestroy()
     {
-        Singleton<ViewController>.Destroy();
+        ViewController.Destroy();
     }
 
 }

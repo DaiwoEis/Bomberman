@@ -19,11 +19,14 @@ public class FunctionController : MonoBehaviour
         if (gameStateController.currStateType == GameStateType.Running)
             FunctionsOn();
 
-        gameStateController.OnGameStart += FunctionsOn;
-        gameStateController.OnGamePaused += FunctionsOff;
-        gameStateController.OnGameResumed += FunctionsOn;
-        gameStateController.OnGameSucceed += FunctionsOff;
-        gameStateController.OnGameFailure += FunctionsOff;
+        gameStateController.GetState(GameStateType.Running).onEnter += FunctionsOn;
+        gameStateController.GetState(GameStateType.Running).onExit += FunctionsOff;
+
+        gameStateController.GetState(GameStateType.Paused).onEnter += FunctionsOff;
+        gameStateController.GetState(GameStateType.Paused).onExit += FunctionsOn;
+
+        gameStateController.GetState(GameStateType.Succeed).onEnter += FunctionsOff;
+        gameStateController.GetState(GameStateType.Failure).onEnter += FunctionsOff;
     }
 
     private void OnDeath()
@@ -34,11 +37,14 @@ public class FunctionController : MonoBehaviour
 
         if (gameStateController != null)
         {
-            gameStateController.OnGameStart -= FunctionsOn;
-            gameStateController.OnGamePaused -= FunctionsOff;
-            gameStateController.OnGameResumed -= FunctionsOn;
-            gameStateController.OnGameSucceed -= FunctionsOff;
-            gameStateController.OnGameFailure -= FunctionsOff;
+            gameStateController.GetState(GameStateType.Running).onEnter -= FunctionsOn;
+            gameStateController.GetState(GameStateType.Running).onExit -= FunctionsOff;
+
+            gameStateController.GetState(GameStateType.Paused).onEnter -= FunctionsOff;
+            gameStateController.GetState(GameStateType.Paused).onExit -= FunctionsOn;
+
+            gameStateController.GetState(GameStateType.Succeed).onEnter -= FunctionsOff;
+            gameStateController.GetState(GameStateType.Failure).onEnter -= FunctionsOff;
         }
     }
 

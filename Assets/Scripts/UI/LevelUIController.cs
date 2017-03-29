@@ -14,17 +14,17 @@ public class LevelUIController : MonoBehaviour
 
     private void Awake()
     {
-        GameStateController.instance.OnGameSucceed += () =>
+        GameStateController.instance.GetState(GameStateType.Succeed).onEnter += () =>
         {
             Singleton<ViewController>.instance.AddCommond(new OpenCommond(_succeedView));
         };
 
-        GameStateController.instance.OnGameFailure += () =>
+        GameStateController.instance.GetState(GameStateType.Failure).onEnter += () =>
         {
             Singleton<ViewController>.instance.AddCommond(new OpenCommond(_failuredView));
         };
 
-        GameStateController.instance.OnGamePaused += () =>
+        GameStateController.instance.GetState(GameStateType.Paused).onEnter += () =>
         {
             Singleton<ViewController>.instance.AddCommond(new OpenCommond(_pausedView));
         };

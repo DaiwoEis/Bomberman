@@ -9,20 +9,36 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         get
         {
             if (_instance == null)
-                _instance = FindObjectOfType<T>();
+            {
+                Create();
+            }
+            return _instance;
+        }
+    }
+
+    public static void Create()
+    {
+        if (_instance == null)
+        {
+            _instance = FindObjectOfType<T>();
 
             if (_instance == null)
             {
                 Debug.LogError(string.Format("Please make at least exit a {0} GameObject in the scene", typeof(T)));
+                return;
             }
 
-            return _instance;
-
+            _instance.Init();
         }
     }
 
-    protected virtual void OnDestroy()
+    public static void Destroy()
     {
         _instance = null;
+    }
+
+    protected virtual void Init()
+    {
+        
     }
 }

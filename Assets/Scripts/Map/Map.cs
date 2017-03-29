@@ -30,22 +30,22 @@ public class Map : MonoSingleton<Map>
 
     private Dictionary<string, GameObject> _tileItemPrefabDic = null;
 
-    private void Awake()
+    protected override void Init()
     {
+        base.Init();
+
         Transform _tilesTrans = transform.Find(CEILS_NAME);
         _ceils = new Ceil[_height, _width];
         for (int z = 0; z < _height; ++z)
         {
             for (int x = 0; x < _width; ++x)
             {
-                int index = z*_width + x;
+                int index = z * _width + x;
                 _ceils[z, x] = _tilesTrans.GetChild(index).GetComponent<Ceil>();
                 _ceils[z, x].coordinate = new CeilCoordinate(z, x);
             }
         }
     }
-
-    private void Start() { }
 
     public Vector3 GetCenterPosition(Vector3 pos)
     {
@@ -58,12 +58,17 @@ public class Map : MonoSingleton<Map>
     public Ceil GetCeil(Vector3 pos)
     {
         Vector3 centerPos = GetCenterPosition(pos);
-        return _ceils[(int) centerPos.z, (int) centerPos.x];
+        return GetCeil((int) centerPos.z, (int) centerPos.x);
     }
 
     public Ceil GetCeil(int row, int col)
-    {       
-        return _ceils[row, col];
+    {
+        return NotValidateCoordinate(row, col) ? null : _ceils[row, col];
+    }
+
+    private bool NotValidateCoordinate(int row, int col)
+    {
+        return row < 0 || row >= _width || col < 0 || col > _height;
     }
 
     public bool IsEmptyTile(Vector3 pos)
