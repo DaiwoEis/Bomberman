@@ -8,31 +8,27 @@ public class PlayerLifeController : MonoBehaviour
     [SerializeField]
     private Transform _playerRespawnPoint = null;
 
-    [SerializeField]
-    private int _playerLife = -1;
-
-    public int playerLife { get { return _playerLife; } }
-
     private GameObject _player = null;
 
-    private static readonly string PLAYER_LIFE = "PlayerLife";
+    private static int playerLifeCount = -1;
+
+    public int playerLife { get { return playerLifeCount; } }
+
+    private int _currLevelPlayerLifeCount = 0;
 
     private void Awake()
-    {
-        if (!PlayerPrefs.HasKey(PLAYER_LIFE))
+    {       
+        if (playerLifeCount == -1)
         {
-            _playerLife = _playerDefaultLife;
-            PlayerPrefs.SetInt(PLAYER_LIFE, _playerLife);
+            playerLifeCount = _playerDefaultLife;
         }
-        else
-        {
-            _playerLife = PlayerPrefs.GetInt(PLAYER_LIFE);
-        }
+
+        _currLevelPlayerLifeCount = playerLifeCount;
 
         _player = GameObject.FindWithTag(TagConfig.PLAYER);
         _player.GetComponent<Actor>().onDeath += () =>
         {
-            _playerLife -= 1;
+            playerLifeCount -= 1;
             if (!PlayerAllLifeIsLost())
                 Invoke("RespawnPlayer", 0.1f);
         };
@@ -40,15 +36,15 @@ public class PlayerLifeController : MonoBehaviour
 
     private void Start()
     {
-        GameStateController.instance.GetState(GameStateType.Succeed).onEnter += () =>
+        GameStateController.instance.GetState(GameStateType.Failure).onEnter += () =>
         {
-            PlayerPrefs.SetInt(PLAYER_LIFE, _playerLife);
+            playerLifeCount = _currLevelPlayerLifeCount;
         };
     }
 
     public bool PlayerAllLifeIsLost()
     {
-        return _playerLife == 0;
+        return playerLifeCount == 0;
     }
 
     private void RespawnPlayer()

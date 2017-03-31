@@ -25,10 +25,17 @@ public class Singleton<T> where T : Singleton<T>
 
     public static void Destroy()
     {
+        _instance.OnDestroy();
+
         _instance = null;
     }
 
     public virtual void Init()
+    {
+        
+    }
+
+    public virtual void OnDestroy()
     {
         
     }

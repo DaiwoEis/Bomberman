@@ -8,10 +8,14 @@ public class PlayerLifeHUD : MonoBehaviour
     [SerializeField]
     private GameObject _lifeImagePrefab = null;
 
+    private int _playerSpawnCount = 0;
+
     private void Awake()
     {
-        GameObject.FindWithTag(TagConfig.PLAYER).GetComponent<Actor>().onSpawn += UpdateLifeImage;
-    }
+        Actor player = GameObject.FindWithTag(TagConfig.PLAYER).GetComponent<Actor>();
+        player.onSpawn += () => { if (++_playerSpawnCount == 1) UpdateLifeImage(); };
+        player.onDeath += UpdateLifeImage;
+    }    
 
     private void UpdateLifeImage()
     {

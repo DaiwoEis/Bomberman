@@ -53,7 +53,7 @@ public class GameStateController : MonoSingleton<GameStateController>
         }
     }
 
-    public void ChangeStateEvent(GameStateType currST, GameStateType nextST)
+    public void ChangeStateFromTo(GameStateType currST, GameStateType nextST)
     {
         if (_currState.stateType == currST)
         {

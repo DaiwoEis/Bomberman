@@ -31,25 +31,51 @@ public class DefeatAllEnemies : GameMode
         InitGameState();
     }
 
+    private void Update()
+    {
+        if (_playerLifeController.PlayerAllLifeIsLost())
+        {
+            
+        }
+    }
+
     private void InitGameState()
     {
         // init
         CoroutineUtility.UStartCoroutine(_initTime, () => _gameStart = true);
-        GameStateController.instance.GetState(GameStateType.Init).ChangeTo(() => _gameStart, GameStateType.Running);
+        GameStateController.instance.GetState(GameStateType.Init).onUpdate += () =>
+        {
+            if (_gameStart)
+                GameStateController.instance.ChangeState(GameStateType.Running);
+        };
 
         // running
-        GameStateController.instance.GetState(GameStateType.Running)
-            .ChangeTo(() => Input.GetKeyDown(KeyCode.Escape), GameStateType.Paused);
+        GameStateController.instance.GetState(GameStateType.Running).onUpdate += () =>
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                GameStateController.instance.ChangeState(GameStateType.Paused);
+        };
 
-        GameStateController.instance.GetState(GameStateType.Running)
-            .ChangeTo(() => _playerLifeController.PlayerAllLifeIsLost(), GameStateType.Failure);
+        GameStateController.instance.GetState(GameStateType.Running).onUpdate += () =>
+        {
+            if (_door.playerEnterTheDoor && ObjectIsComplete())
+            {
+                GameStateController.instance.ChangeState(GameStateType.Succeed);
+            }
+        };
 
-        GameStateController.instance.GetState(GameStateType.Running)
-            .ChangeTo(() => _door.playerEnterTheDoor && ObjectIsComplete(), GameStateType.Succeed);
+        GameStateController.instance.GetState(GameStateType.Running).onUpdate += () =>
+        {
+            if (_playerLifeController.PlayerAllLifeIsLost())
+            {
+                CoroutineUtility.UStartCoroutine(1f,
+                    () => GameStateController.instance.ChangeState(GameStateType.Failure));
+            }
+        };
 
         // paused
         _pausedView.onExit +=
-            () => GameStateController.instance.ChangeStateEvent(GameStateType.Paused, GameStateType.Running);
+            () => GameStateController.instance.ChangeStateFromTo(GameStateType.Paused, GameStateType.Running);
     }
 
     public override bool ObjectIsComplete()

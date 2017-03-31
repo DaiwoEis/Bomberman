@@ -15,11 +15,6 @@ public class CoroutineUtility : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        
-    }
-
     public static Coroutine UStartCoroutine(IEnumerator routine)
     {
         return instance.StartCoroutine(routine);
@@ -45,11 +40,6 @@ public class CoroutineUtility : MonoBehaviour
         return instance.StartCoroutine(_TimeActionReal(time, action));
     }
 
-    public static void UStopAllCoroutines()
-    {
-        instance.StopAllCoroutines();
-    }
-
     private static IEnumerator _TimeAction(float time, Action action)
     {
         yield return new WaitForSeconds(time);
@@ -70,7 +60,13 @@ public class CoroutineUtility : MonoBehaviour
 
     public static void UStopCoroutine(Coroutine routine)
     {
-        instance.StopCoroutine(routine);
+        if (instance != null)
+            instance.StopCoroutine(routine);
+    }
+
+    public static void UStopAllCoroutines()
+    {
+        instance.StopAllCoroutines();
     }
 
     private void OnDestroy()

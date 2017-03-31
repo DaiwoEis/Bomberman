@@ -22,7 +22,7 @@ public class OpenCommond : UICommond
     {
         if (_nextView == null)
         {
-            Debug.LogWarning("uitype is not use");
+            Debug.LogWarning("uiView is null");
             yield break;
         }
 
@@ -97,13 +97,22 @@ public class ViewController : Singleton<ViewController>
 
     private Queue<UICommond> _uiCommonds = new Queue<UICommond>();
 
+    private Coroutine _checkCommondCoroutine = null;
+
     private ViewController() { }
 
     public override void Init()
     {
         base.Init();
 
-        CoroutineUtility.UStartCoroutine(_CheckCommond());
+        _checkCommondCoroutine = CoroutineUtility.UStartCoroutine(_CheckCommond());
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        CoroutineUtility.UStopCoroutine(_checkCommondCoroutine);
     }
 
     public void AddCommond(UICommond commond)

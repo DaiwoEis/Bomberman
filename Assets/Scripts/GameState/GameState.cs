@@ -7,32 +7,21 @@ public class GameState
 {
     protected GameStateController _stateController = null;
 
-    private List<StateChangeEvent> _stateChangeEvents = null;
-
     [SerializeField]
     private GameStateType _stateType;
 
     public GameStateType stateType { get { return _stateType; } }
-
+    
     public event Action onEnter = null;
 
     public event Action onExit = null;
 
+    public event Action onUpdate = null;
+
     public GameState(GameStateController stateController, GameStateType stateType)
     {
         _stateController = stateController;
-        _stateChangeEvents = new List<StateChangeEvent>();
         _stateType = stateType;
-    }
-
-    public void ChangeTo(Func<bool> changeEvent, GameStateType destStateType)
-    {
-        StateChangeEvent newEvent = new StateChangeEvent
-        {
-            ifChangeEvent = changeEvent,
-            destStateType = destStateType
-        };
-        _stateChangeEvents.Add(newEvent);
     }
 
     public virtual void OnEnter()
@@ -47,14 +36,7 @@ public class GameState
 
     public virtual void OnUpdate()
     {
-        foreach (StateChangeEvent changeEvent in _stateChangeEvents)
-        {
-            if (changeEvent.ifChangeEvent())
-            {
-                _stateController.ChangeState(changeEvent.destStateType);
-                return;
-            }
-        }
+        if (onUpdate != null) onUpdate();
     }
 }
 

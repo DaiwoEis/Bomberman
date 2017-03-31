@@ -31,9 +31,10 @@ public class Door : Actor
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(TagConfig.PLAYER) && Utility.IsArrive(other.transform.position, transform.position))
+        if (other.CompareTag(TagConfig.PLAYER) &&
+            Utility.IsArrive(other.transform.position, Map.instance.GetCenterPosition(transform.position)))
         {
-            playerEnterTheDoor = true;            
+            playerEnterTheDoor = true;
         }
     }
 
