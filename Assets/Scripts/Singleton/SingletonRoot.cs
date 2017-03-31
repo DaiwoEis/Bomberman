@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-public class GameRoot : MonoBehaviour
+public class SingletonRoot : MonoBehaviour
 {
     [SerializeField]
     private TextAsset _singletonConfig = null;

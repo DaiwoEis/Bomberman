@@ -2,11 +2,17 @@
 
 public class Door : Actor
 {
-    private bool _locked = true;
-
     private GameMode _gameMode = null;
 
     public bool playerEnterTheDoor { get; private set; }
+
+    [SerializeField]
+    private GameObject _lightPillar = null;
+
+    private void Awake()
+    {
+        _lightPillar.SetActive(false);
+    }
 
     private void Start()
     {
@@ -19,25 +25,20 @@ public class Door : Actor
     {
         if (_gameMode.ObjectIsComplete())
         {
-            _locked = false;
+            _lightPillar.SetActive(true);
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (_locked) return;
-
         if (other.CompareTag(TagConfig.PLAYER) && Utility.IsArrive(other.transform.position, transform.position))
         {
-            playerEnterTheDoor = true;
-            _locked = true;
+            playerEnterTheDoor = true;            
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (_locked) return;
-
         if (other.CompareTag(TagConfig.PLAYER))
         {
             playerEnterTheDoor = false;

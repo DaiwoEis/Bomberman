@@ -28,6 +28,7 @@ public class PlayerLifeHUD : MonoBehaviour
             GameObject lifeImage = Instantiate(_lifeImagePrefab);
             lifeImage.transform.SetParent(transform);
             lifeImage.transform.localPosition = Vector3.zero;
+            lifeImage.transform.localScale = Vector3.one;
             lifeImage.transform.localRotation = Quaternion.identity;
         }
     }

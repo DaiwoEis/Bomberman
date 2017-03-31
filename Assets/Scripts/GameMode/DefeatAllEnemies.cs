@@ -16,6 +16,9 @@ public class DefeatAllEnemies : GameMode
     private Door _door = null;
 
     [SerializeField]
+    private float _initTime = 4f;
+
+    [SerializeField]
     private BaseView _pausedView = null;
 
     [SerializeField]
@@ -31,7 +34,7 @@ public class DefeatAllEnemies : GameMode
     private void InitGameState()
     {
         // init
-        CoroutineUtility.UStartCoroutine(1f, () => _gameStart = true);
+        CoroutineUtility.UStartCoroutine(_initTime, () => _gameStart = true);
         GameStateController.instance.GetState(GameStateType.Init).ChangeTo(() => _gameStart, GameStateType.Running);
 
         // running
